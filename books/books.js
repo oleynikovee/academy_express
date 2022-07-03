@@ -23,7 +23,7 @@ router.get('/:id',(req,res,next)=>{
                 result=element;
             }
         });
-        result===""?res.json("Такого элемента не существует"):res.json(result);
+        result===""?res.json("Такого елемента не існує"):res.json(result);
     }catch(err){
         next(err);
     }
@@ -40,7 +40,7 @@ router.get('/:id/review',(req,res,next)=>{
                 result=element.review;
             }
         });
-        result===""?res.json("Такого элемента не существует"):res.json(result);
+        result===""?res.json("Такого елемента не існує"):res.json(result);
     }catch(err){
         next(err);
     }
@@ -59,6 +59,7 @@ router.post('/',(req,res,next)=>{
 });
 //Update review by id of book
 router.put('/:id/review',(req,res,next)=>{
+    let result="Такої книги не існує";
     try{
         let json=require('../books.json');
         let data=JSON.parse(JSON.stringify(json));
@@ -68,10 +69,11 @@ router.put('/:id/review',(req,res,next)=>{
                 let reviews=JSON.parse(JSON.stringify(element.review));
                 reviews.push(req.body.review);
                 element.review=reviews;
+                result="Changed";
             }
         });
         writeInJson(data);
-        res.end('changed')
+        res.end(result)
     }catch(err){
         next(err);
     }
@@ -79,6 +81,7 @@ router.put('/:id/review',(req,res,next)=>{
 //Update title by id of book
 router.put('/:id/title',(req,res,next)=>{
     try{
+        let result="Такої книги не існує";
         let json=require('../books.json');
         let data=JSON.parse(JSON.stringify(json));
         console.log(req.body);
@@ -86,9 +89,10 @@ router.put('/:id/title',(req,res,next)=>{
             if(element.id.toString()===req.params.id){
                 element.title=req.body.title;
             }
+            result="Changed";
         });
         writeInJson(data);
-        res.end('changed')
+        res.end(result);
     }catch(err){
         next(err);
     }
@@ -119,7 +123,25 @@ router.delete('/:id/review/:reviewID',(req,res,next)=>{
         next(err);
     }
 });
-
+//Delete one of books
+router.delete('/:id',(req,res,next)=>{
+    let result ="Такої книги не існує"
+    try{
+        let json=require('../books.json');
+        let data=JSON.parse(JSON.stringify(json));
+        console.log(req.body);
+        for(let i=0;i<data.length;i++){
+            if(data[i].id.toString()===req.params.id){
+                data.splice(i, 1);
+                result="Deleted"
+            }
+        }
+        writeInJson(data);
+        res.end(result);
+    }catch(err){
+        next(err);
+    }
+});
 //sort array of book
 function sortById(arr) {
     arr.sort((a, b) => a.age > b.age ? -1 : 1);
