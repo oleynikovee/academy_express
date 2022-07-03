@@ -1,6 +1,6 @@
 const router=require('express').Router();
 const fs=require('fs');
-
+// Get list of all books
 router.get('/',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -11,7 +11,7 @@ router.get('/',(req,res,next)=>{
         next(err);
     }
 });
-
+//Get book by id
 router.get('/:id',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -28,7 +28,7 @@ router.get('/:id',(req,res,next)=>{
         next(err);
     }
 });
-
+//Get reviews of books by id of books
 router.get('/:id/review',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -45,7 +45,7 @@ router.get('/:id/review',(req,res,next)=>{
         next(err);
     }
 });
-
+//Create book
 router.post('/',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -57,7 +57,7 @@ router.post('/',(req,res,next)=>{
         next(err);
     }
 });
-
+//Update review by id of book
 router.put('/:id/review',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -76,7 +76,7 @@ router.put('/:id/review',(req,res,next)=>{
         next(err);
     }
 });
-
+//Update title by id of book
 router.put('/:id/title',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -93,7 +93,7 @@ router.put('/:id/title',(req,res,next)=>{
         next(err);
     }
 });
-
+//Delete review by id of review using id of book
 router.delete('/:id/review/:reviewID',(req,res,next)=>{
     try{
         let json=require('../books.json');
@@ -120,11 +120,11 @@ router.delete('/:id/review/:reviewID',(req,res,next)=>{
     }
 });
 
-
+//sort array of book
 function sortById(arr) {
     arr.sort((a, b) => a.age > b.age ? -1 : 1);
 }
-
+//write into JSON file
 function writeInJson(data){
     let result=JSON.stringify(data);
     fs.writeFile("books.json",result, 'utf8', function (err) {
